@@ -5,9 +5,9 @@ import pandas as pd
 
 from src.config import MODEL_PATH,CAT_FEATURES,NUM_FEATURES
 
-app = FastAPI(title="Customer Churn Prediction API")
+app=FastAPI(title="Customer Churn Prediction API")
 
-model = joblib.load(MODEL_PATH)
+model=joblib.load(MODEL_PATH)
 
 class CustomerData(BaseModel):
     Tenure_Months:int
@@ -20,11 +20,10 @@ class CustomerData(BaseModel):
 
 @app.get("/health")
 def health():
-    return {"status": "ok"}
-
+        return {"status":"ok"}
+    
 @app.post("/predict")
-
-def predict(data:CustomerData):
+def predict(data: CustomerData):
     input_dict={
         "Tenure Months":data.Tenure_Months,
         "Monthly Charges":data.Monthly_Charges,
@@ -33,11 +32,15 @@ def predict(data:CustomerData):
         "Internet Service":data.Internet_Service,
         "Payment Method":data.Payment_Method,
         "Senior Citizen":data.Senior_Citizen
-        }  
-    
-    df = pd.Dataframe([input_dict])
-    prediction=model.predict(df)[0]
-    return{
-        "churn_Prediction":int(prediction),
-        "message": "Customer is likely to churn" if prediction==1 else "Customer is likely to stay"
-        }
+    }
+
+    df=pd.DataFrame([input_dict])
+    prediction = model.predict(df)[0]
+    probability = model.predict_proba(df)[0][1]
+
+
+    return {
+        "Churn_Prediction": int(prediction),
+        "Churn_Probability": float(probability),
+        "message": "Customer is likely to churn" if prediction == 1 else "Customer is likely to Stay"
+    }

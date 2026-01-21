@@ -1,44 +1,46 @@
-# churn_model
 # Customer Churn Prediction System 🚀
 
-An end-to-end *Machine Learning deployment project* that predicts whether a telecom customer is likely to churn. The system includes data preprocessing, model training, evaluation, and a FastAPI-based backend API.
+An end-to-end **Machine Learning application** that predicts whether a telecom customer is likely to churn. The system includes data preprocessing, model training, evaluation, a FastAPI-based backend API, and a modern Streamlit frontend.
 
 ---
 
 ## 📌 Project Overview
 
-Customer churn is a critical business problem for telecom companies. This project uses customer profile data such as tenure, monthly charges, and contract type to predict churn behavior.
+Customer churn is a critical business problem for telecom companies. This project uses customer profile data such as tenure, monthly charges, contract type, and service preferences to predict churn behavior.
 
-The trained model achieves *~79.5% accuracy* and is deployed through a REST API using FastAPI.
+The trained model achieves **~79.5% accuracy** and is accessible through a REST API and an interactive web interface built using Streamlit.
 
 ---
 
 ## 📂 Project Structure
 
-
+```
 ml-churn-deployment/
 │
 ├── data/
-│   ├── raw/              # Original dataset
-│   └── processed/       # Cleaned dataset
+│   ├── raw/                 # Original dataset
+│   └── processed/          # Cleaned dataset
 │
 ├── model/
-│   └── churn_pipeline.pkl   # Trained ML pipeline
+│   └── churn_pipeline.pkl  # Trained ML pipeline
 │
 ├── src/
-│   ├── config.py
-│   ├── data_loader.py
-│   ├── preprocessing.py
-│   ├── train.py
-│   └── evaluate.py
+│   ├── config.py           # Paths & feature configuration
+│   ├── data_loader.py      # Data cleaning logic
+│   ├── preprocessing.py   # Feature preprocessing
+│   ├── train.py            # Model training
+│   ├── evaluate.py         # Model evaluation
+│   └── visuals.py          # EDA & feature importance
 │
 ├── app/
-│   └── main.py           # FastAPI backend
+│   └── main.py             # FastAPI backend
+│
+├── frontend/
+│   └── streamlit_app.py    # Streamlit UI
 │
 ├── requirements.txt
-├── Dockerfile (coming soon)
 └── README.md
-
+```
 
 ---
 
@@ -46,51 +48,87 @@ ml-churn-deployment/
 
 ### 1. Data Cleaning
 
-* Converted *Total Charges* to numeric values
-* Filled missing values using fillna()
+* Converted **Total Charges** to numeric values
+* Filled missing values using `fillna()`
 
 ### 2. Preprocessing
 
-* *StandardScaler* for numerical features
-* *OneHotEncoder* for categorical features
+* **StandardScaler** for numerical features
+* **OneHotEncoder** for categorical features
 
 ### 3. Model Training
 
-* Algorithm: *Logistic Regression*
+* Algorithm: **Logistic Regression**
 * Implemented using Scikit-learn Pipeline
 
 ### 4. Model Evaluation
 
-* Accuracy: *79.49%*
+* Accuracy: **79.49%**
 * Balanced performance on non-churn and churn customers
 
 ---
 
-## 🔗 API Endpoints
+## 📊 Model Performance
+
+### Confusion Matrix
+
+```
+[[4654  520]
+ [ 900  969]]
+```
+
+### Classification Report Summary
+
+| Class         | Precision | Recall | F1-score |
+| ------------- | --------- | ------ | -------- |
+| Non-Churn (0) | 0.84      | 0.90   | 0.87     |
+| Churn (1)     | 0.65      | 0.52   | 0.58     |
+
+---
+
+## 🔍 Business Insights
+
+Key factors influencing customer churn:
+
+* High monthly charges
+* Month-to-month contracts
+* Low tenure (new customers)
+* Fiber optic internet users
+* Electronic check payment method
+
+These insights are visualized using:
+
+* Churn vs Contract graph
+* Churn vs Monthly Charges chart
+* Feature Importance plot
+
+---
+
+## 🔗 API Endpoints (FastAPI)
 
 ### Health Check
 
-
+```
 GET /health
-
+```
 
 Response:
 
-json
+```json
 {"status": "ok"}
-
+```
 
 ---
 
 ### Churn Prediction
 
-
+```
 POST /predict
-
+```
 
 Sample Request:
 
-json
+```json
 {
   "Tenure_Months": 12,
   "Monthly_Charges": 70.5,
@@ -100,16 +138,36 @@ json
   "Payment_Method": "Electronic check",
   "Senior_Citizen": "No"
 }
-
+```
 
 Sample Response:
 
-json
+```json
 {
   "churn_prediction": 1,
+  "churn_probability": 0.78,
   "message": "Customer is likely to churn"
 }
+```
 
+---
+
+## 🎨 Frontend (Streamlit)
+
+The Streamlit UI allows users to:
+
+* Enter customer details
+* Get churn predictions
+* View risk levels (High / Medium / Low)
+* Receive randomized retention recommendations
+
+### Risk Levels
+
+| Probability | Risk Level |
+| ----------- | ---------- |
+| > 0.7       | 🔴 High    |
+| 0.4 – 0.7   | 🟡 Medium  |
+| < 0.4       | 🟢 Low     |
 
 ---
 
@@ -117,45 +175,39 @@ json
 
 ### 1. Activate Virtual Environment
 
-
+```
 venv\Scripts\activate
-
+```
 
 ### 2. Install Dependencies
 
-
+```
 pip install -r requirements.txt
+```
 
+### 3. Start FastAPI Backend
 
-### 3. Start the API Server
-
-
+```
 uvicorn app.main:app --reload
+```
 
+Open:
 
-### 4. Open Swagger UI
-
-
+```
 http://127.0.0.1:8000/docs
+```
 
+### 4. Start Streamlit Frontend
 
----
+```
+streamlit run frontend/streamlit_app.py
+```
 
-## 📊 Model Performance
+Open:
 
-### Confusion Matrix
-
-
-[[4654  520]
- [ 900  969]]
-
-
-### Classification Report Summary
-
-| Class         | Precision | Recall | F1-score |
-| ------------- | --------- | ------ | -------- |
-| Non-Churn (0) | 0.84      | 0.90   | 0.87     |
-| Churn (1)     | 0.65      | 0.52   | 0.58     |
+```
+http://localhost:8501
+```
 
 ---
 
@@ -169,23 +221,24 @@ http://127.0.0.1:8000/docs
 | Joblib       | Model serialization |
 | FastAPI      | REST API            |
 | Pydantic     | Input validation    |
-| Uvicorn      | API server          |
+| Streamlit    | Frontend UI         |
+| Matplotlib   | Data visualization  |
 
 ---
 
-## 🚀 Next Steps
+## 🚀 Future Enhancements
 
-* Build Streamlit frontend
-* Dockerize the app
-* Deploy on Render
-* Generate public URL
-* Record demo video
+* Cloud deployment
+* Containerization
+* Business dashboard
+* PDF reports
+* Admin analytics panel
 
 ---
 
 ## 👨‍💻 Author
 
-*Anuj Chhaparwal*
+**Anuj Chhaparwal**
 Machine Learning & Backend Developer
 
 ---
