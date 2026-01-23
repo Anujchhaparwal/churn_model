@@ -1,6 +1,6 @@
 # Customer Churn Prediction System 🚀
 
-An end-to-end **Machine Learning application** that predicts whether a telecom customer is likely to churn. The system includes data preprocessing, model training, evaluation, a FastAPI-based backend API, and a modern Streamlit frontend.
+An end-to-end **Machine Learning application** that predicts whether a telecom customer is likely to churn. The system includes data preprocessing, model training, evaluation, a FastAPI-based backend API, a modern Streamlit frontend, Docker containerization, and basic cloud deployment using Render.
 
 ---
 
@@ -8,7 +8,11 @@ An end-to-end **Machine Learning application** that predicts whether a telecom c
 
 Customer churn is a critical business problem for telecom companies. This project uses customer profile data such as tenure, monthly charges, contract type, and service preferences to predict churn behavior.
 
-The trained model achieves **~79.5% accuracy** and is accessible through a REST API and an interactive web interface built using Streamlit.
+The trained model achieves **~79.5% accuracy** and is accessible through:
+
+* A REST API (FastAPI)
+* An interactive web interface (Streamlit)
+* A Dockerized cloud deployment (Render)
 
 ---
 
@@ -33,11 +37,13 @@ ml-churn-deployment/
 │   └── visuals.py          # EDA & feature importance
 │
 ├── app/
+│   ├── __init__.py
 │   └── main.py             # FastAPI backend
 │
 ├── frontend/
 │   └── streamlit_app.py    # Streamlit UI
 │
+├── Dockerfile
 ├── requirements.txt
 └── README.md
 ```
@@ -112,14 +118,6 @@ These insights are visualized using:
 GET /health
 ```
 
-Response:
-
-```json
-{"status": "ok"}
-```
-
----
-
 ### Churn Prediction
 
 ```
@@ -171,43 +169,50 @@ The Streamlit UI allows users to:
 
 ---
 
-## ▶️ How to Run Locally
+## ▶️ Run Locally (Without Docker)
 
-### 1. Activate Virtual Environment
+1. Activate virtual environment
+2. Install dependencies from `requirements.txt`
+3. Start FastAPI backend
+4. Launch Streamlit frontend
 
-```
-venv\Scripts\activate
-```
-
-### 2. Install Dependencies
-
-```
-pip install -r requirements.txt
-```
-
-### 3. Start FastAPI Backend
-
-```
-uvicorn app.main:app --reload
-```
-
-Open:
+The API can be accessed at:
 
 ```
 http://127.0.0.1:8000/docs
 ```
 
-### 4. Start Streamlit Frontend
-
-```
-streamlit run frontend/streamlit_app.py
-```
-
-Open:
+The frontend runs at:
 
 ```
 http://localhost:8501
 ```
+
+---
+
+## 🐳 Docker Setup (Local)
+
+The backend is containerized using Docker for consistent deployment.
+
+Steps:
+
+* Build the Docker image
+* Run the container on port 10000
+* Access the API using `/health` or `/docs`
+
+---
+
+## ☁️ Cloud Deployment (Render – Overview)
+
+The application is deployed using **Render** with Docker support.
+
+Basic process:
+
+* Connect the GitHub repository to Render
+* Select Docker as the runtime
+* Deploy the application
+
+Render provides a public URL to access the API endpoints online.
 
 ---
 
@@ -223,22 +228,24 @@ http://localhost:8501
 | Pydantic     | Input validation    |
 | Streamlit    | Frontend UI         |
 | Matplotlib   | Data visualization  |
+| Docker       | Containerization    |
+| Render       | Cloud deployment    |
 
 ---
 
 ## 🚀 Future Enhancements
 
-* Cloud deployment
-* Containerization
-* Business dashboard
-* PDF reports
-* Admin analytics panel
+* Business analytics dashboard
+* PDF churn reports
+* Admin monitoring panel
+* Model retraining pipeline
+* User authentication
 
 ---
 
 ## 👨‍💻 Author
 
-**Anuj Chhaparwal**
+**Anuj Chapparwal**
 Machine Learning & Backend Developer
 
 ---
