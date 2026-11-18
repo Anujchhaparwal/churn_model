@@ -245,7 +245,7 @@ Render provides a public URL to access the API endpoints online.
 
 ## 👨‍💻 Author
 
-**Anuj Chapparwal**
+**Anuj Chhaparwal**
 Machine Learning & Backend Developer
 
 ---
